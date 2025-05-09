@@ -32,7 +32,7 @@ double getTimeMD(void) {									// nur zum testen
 
 double getPeriodM(bool* status, uint32_t t1, uint32_t t2) { 								// liefert die Zeit in Sekunden zwischen zwei Zeitstempel
 	double periode = 1.0/ 90e6; 																							// * 90.000.000 für Sekunden
-	uint32_t diff = (t2 >= t1) ? (t2 - t1) : (0xFFFFFFFF - t1 + t2 + 1);
+	uint32_t diff = (t2 >= t1) ? (t2 - t1) : (0xFFFFFFFF - t1 + t2 + 1); // Bitmanipulation mit ~?
 	
 	return (double) diff * periode;
 	
