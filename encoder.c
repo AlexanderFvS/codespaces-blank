@@ -29,3 +29,7 @@ int readM () {
 	return 0;
 }
 
+void resetCount () {
+	count = 0;
+	
+}
