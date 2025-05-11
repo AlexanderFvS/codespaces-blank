@@ -1,40 +1,32 @@
+#include "led_io.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include "stm32f4xx_hal.h"
 
-
-void setLedE (int num) {
-	
-	int maskSet = (0x01U << num);
-	GPIOE->ODR = GPIOE->ODR | maskSet;
-	
+void setLedD(int mask)
+{
+	GPIOD->ODR = mask & 0xFFu;
 }
 
-void clearLedE (int num) {
-	
-	int maskSet = (0x01U << num);
-	GPIOE->ODR = GPIOE->ODR & ~maskSet;
-	
+void resetLedD()
+{
+	GPIOD->ODR = 0;
 }
 
-void setLedMaskD (int mask) {
-	
-	int maskSet = (mask & 0b11111111);
-	GPIOD->ODR = maskSet;
-	
+void setLedE(int offset)
+{
+	GPIOE->ODR = 0x01u << offset;
 }
 
-void resetLedMaskD () {
-	
-	GPIOD->ODR = 0b00000000;
-	
+int readLedF()
+{
+	return GPIOF->IDR & 0x03u;
 }
 
-bool readButton (int num) {
-	
-	int maskSet = (0x01U << num);
+bool readButtonF(int offset)
+{
+	int maskSet = (0x01u << offset);
 	int input = GPIOF->IDR;
-		
-	return maskSet != (input & maskSet);
 	
+	return maskSet != (input & maskSet);
 }
