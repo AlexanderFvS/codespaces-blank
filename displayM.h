@@ -1,11 +1,14 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#ifndef DISPLAY_OUTPUT_H
+#define DISPLAY_OUTPUT_H
 
+void printLabels();
 
-void print (double drehwinkel, double drehgeschwindigkeit);
+void printError();
 
+void clearError();
 
+void printWinkel(double winkel);
 
-
+void printGeschw(double geschw);
 
 #endif
