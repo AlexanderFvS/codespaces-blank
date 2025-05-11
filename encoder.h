@@ -28,6 +28,6 @@ Status state_sieve[4][4] = {
 
 int readM ();
 
-
+void resetCount ();
 
 #endif 
