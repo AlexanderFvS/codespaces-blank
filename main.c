@@ -1,71 +1,56 @@
-/**
- ******************************************************************************
- * @file    main.c
- * @author  TI Team
- *          HAW-Hamburg
- *          Labor für technische Informatik
- *          Berliner Tor  7
- *          D-20099 Hamburg
- * @version 1.1
- *
- * @date    17. Juli 2020
- * @brief   Rahmen fuer C Programme, die auf dem ITSboard ausgefuehrt werden.
- *
- *					25.04.2022 Tobias De Gasperis: printf hinzugefuegt
- ******************************************************************************
- */
-
 #include <stdio.h>
 #include "stm32f4xx_hal.h"
-#include "init.h"
-#include "delay.h"
 #include "LCD_GUI.h"
-#include "LCD_Demos.h"
+#include "init.h"
 #include "lcd.h"
-#include "fontsFLASH.h"
-#include "LCD_Touch.h"
-#include "error.h"
-#include "timer.h"
-#include "timeM.h"
 #include "encoder.h"
-#include <stdint.h>
-#include "displayM.h"
-#include "ledM.h"
+#include "display_output.h"
+#include "angle.h"
+#include "timestamp.h"
+#include "led_io.h"
 
+#define ZEITFENSTER 0.5
 
-
-
-
-/**
-  * @brief  Main program
-  * @param  None
-  * @retval None
-  */
-int main(void){
-	initITSboard();                 // Initialisierung des ITS Boards
-	GUI_init(DEFAULT_BRIGHTNESS);   // Initialisierung des LCD Boards mit Touch
-	TP_Init(false);                 // Initialisierung des LCD Boards mit Touch
-	lcdSetFont(24);
-	if (!checkVersionFlashFonts()) {
-	    // Ueberpruefe Version der Fonts im Flash passt nicht zur Software Version
-		Error_Handler();
-	}
-	lcdGotoXY(9,1);
-	lcdPrintS("Drehwinkel");
-	
-	lcdGotoXY(5,7);
-	lcdPrintS("Drehgeschwindigkeit");
-	
+int main()
+{
+	initITSboard();
+	GUI_init(DEFAULT_BRIGHTNESS);
+	lcdSetFont(20);
+	printLabels();
 	initTimeM();
 	
-	while(1) {
-		while(!readM());
+	uint32_t time1 = getTimeM();
+	int count1 = getCount();
+	double winkel1 = 0.0;
+	double geschw1 = 0.0;
+	printWinkel(winkel1);
+	printGeschw(geschw1);
+	
+	while (1)
+	{
+		if (getPhase())
+		{
+			printError();
+			while (!readButtonF(6));
+			clearError();
+		}
 		
+		uint32_t time2 = getTimeM();
+		int count2 = getCount();
+		double period = getPeriodM(time1, time2);
 		
-		
-		
-		
+		if (period > ZEITFENSTER)
+		{
+			double winkel2 = calcWinkel();
+			double geschw2 = calcGeschw(count1, count2, period);
+			
+			if (winkel2 != winkel1) printWinkel(winkel2);
+			if (geschw2 != geschw1) printGeschw(geschw2);
+			
+			count1 = count2;
+			time1 = time2;
+			winkel1 = winkel2;
+			geschw1 = geschw2;
+		}
 	}
 }
-
-// EOF
