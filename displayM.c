@@ -1,22 +1,42 @@
-#include "LCD_GUI.h"
-#include "LCD_Demos.h"
-#include "lcd.h"
-#include <stdint.h>
 #include <stdio.h>
+#include "display_output.h"
+#include "lcd.h"
 
+void printLabels()
+{
+	lcdGotoXY(1,1);
+	lcdPrintS("Drehwinkel:");
+	
+	lcdGotoXY(1,4);
+	lcdPrintS("Drehgesch.:");
+}
 
-// My comment lol
+void printError()
+{
+	lcdGotoXY(1, 8);
+	lcdPrintS("ERROR: INVALID STATE");
+}
 
-void print (double drehwinkel, double drehgeschwindigkeit) {
-	
-	char wink[12];
-	sprintf(wink, "%.2f", drehwinkel);
-	lcdGotoXY(13,3);
-	lcdPrintS(wink);
-	
-	char dreh[12];
-	sprintf(dreh, "%.2f", drehgeschwindigkeit);
-	lcdGotoXY(13,9);
-	lcdPrintS(dreh);
-	
+void clearError()
+{
+	lcdGotoXY(1, 8);
+	lcdPrintS(" ");
+}
+
+void printWinkel(double winkel)
+{
+	char temp[12];
+	sprintf(temp, "%.2f", winkel);
+	lcdGotoXY(1,2);
+	lcdPrintS(temp);
+	lcdPrintS(" Grad");
+}
+
+void printGeschw(double geschw)
+{
+	char temp[12];
+	sprintf(temp, "%.2f", geschw);
+	lcdGotoXY(1,5);
+	lcdPrintS(temp);
+	lcdPrintS(" Grad/Sek.");
 }
