@@ -1,16 +1,16 @@
-#ifndef LEDM_H
-#define LEDM_H
+#ifndef LED_IO_H
+#define LED_IO_H
 
 #include <stdbool.h>
 
-void setLedE (int);
+void setLedD(int);
 
-void clearLedE (int);
+void resetLedD();
 
-void setLedMaskD (int);
+void setLedE(int);
 
-void resetLedMaskD ();
+int readLedF();
 
-bool readButton (int);
+bool readButtonF(int);
 
 #endif
