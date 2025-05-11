@@ -1,34 +1,12 @@
-#ifndef TIMEM_H
-#define TIMEM_H
+#ifndef TIMESTAMP_H
+#define TIMESTAMP_H
 
 #include <stm32f4xx_hal.h>
-#include <stdbool.h>
 
-void initTimeM(void);
+void initTimeM();
 	
-uint32_t getTimeM(void);
+uint32_t getTimeM();
 
-double getTimeMD(void);
+double getPeriodM(uint32_t , uint32_t);
 
-double getPeriodM(bool* , uint32_t , uint32_t);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#endif //TIMERMM_H
+#endif
