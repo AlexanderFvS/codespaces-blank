@@ -1,35 +1,56 @@
-#include "encoderM.h"
-#include "stm32f4xx_hal.h"
+#include "encoder.h"
+#include "led_io.h"
 
-static Phase current_phase = PHASE_A;
+int count = 0;
+static Phase currPhase = PHASE_A;
 
+Direction transitions[4][4] =
+{ //   A   |    D    |    B    |    C
+	{NO_CHANGE, BACKWARDS, FORWARDS, INVALID}, // A
+	{FORWARDS, NO_CHANGE, INVALID, BACKWARDS}, // D
+	{BACKWARDS, INVALID, NO_CHANGE, FORWARDS}, // B
+	{INVALID, FORWARDS, BACKWARDS, NO_CHANGE}  // C
+};
 
-int readM () {
-	Phase new_phase = (Phase) GPIOF->IDR & 0x03;
-	Status curr = state_sieve[current_phase][new_phase];
-	current_phase = new_phase;
+int getPhase()
+{
+	int newPhase = readLedF();
+	Direction currDir = transitions[currPhase][newPhase];
+	currPhase = newPhase;
 	
-	switch(curr) {
-		
-		case STAT_F:
+	switch(currDir)
+	{
+		case FORWARDS:
 			count++;
+			setLedD(count);
+			setLedE(7); // D23
 			break;
 		
-		case STAT_B:
+		case BACKWARDS:
 			count--;
+			setLedD(count);
+			setLedE(6); // D22
 			break;
 		
-		case STAT_E:
-			return -1;					//Error Handling?
-			break;
+		case INVALID:
+			count = 0;
+			resetLedD();
+			setLedE(5); // D21
+			return -1;
 		
-		case STAT_N:
+		case NO_CHANGE:
 			break;
 	}
+	
 	return 0;
 }
 
-void resetCount () {
+int getCount()
+{
+	return count;
+}
+
+void resetCount()
+{
 	count = 0;
-	
 }
