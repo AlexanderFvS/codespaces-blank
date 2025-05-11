@@ -33,8 +33,7 @@
 #include "ledM.h"
 
 
-#define IDR_MASK_PIN_0 (0x01U) 
-#define IDR_MASK_PIN_1 (0x01U >> 1) 
+
 
 
 /**
