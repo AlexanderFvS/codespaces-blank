@@ -23,4 +23,6 @@ int getCount();
 
 void resetCount();
 
+void setPhase();
+
 #endif
