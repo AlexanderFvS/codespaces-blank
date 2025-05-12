@@ -2,7 +2,7 @@
 #include "led_io.h"
 
 int count = 0;
-static Phase currPhase = PHASE_A;
+static Phase currPhase;
 
 Direction transitions[4][4] =
 { //   A   |    D    |    B    |    C
@@ -53,4 +53,8 @@ int getCount()
 void resetCount()
 {
 	count = 0;
+}
+
+void setPhase() {
+	currPhase = readLedF();
 }
