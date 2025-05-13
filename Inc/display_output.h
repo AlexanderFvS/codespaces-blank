@@ -1,9 +1,6 @@
 #ifndef DISPLAY_OUTPUT_H
 #define DISPLAY_OUTPUT_H
 
-#ifndef ANGLE_H
-#define ANGLE_H
-
 
 /*
  ****************************************************************************************
