@@ -1,16 +1,76 @@
-#ifndef LED_IO_H
-#define LED_IO_H
-
+#include "led_io.h"
+#include <stdio.h>
 #include <stdbool.h>
+#include "stm32f4xx_hal.h"
 
-void setLedD(int);
 
-void resetLedD();
+/*
+ ****************************************************************************************
+ *  @brief      Bekommt eine Bitmaske und schaltet die LEDs in GPIOF an, bzw. aus.
+ *
+ *  @param  		mask: int mit der Bitmaske
+ *
+ *  @return     void
+ ****************************************************************************************/
+ 
+void setLedD(int mask)
+{
+	GPIOD->ODR = mask & 0xFFu;
+}
 
-void setLedE(int);
+/*
+ ****************************************************************************************
+ *  @brief      Setzt alle LEDs in GPIOD wieder auf 0.
+ *
+ *
+ *  @return     void
+ ****************************************************************************************/
 
-int readLedF();
+void resetLedD()
+{
+	GPIOD->ODR = 0;
+}
 
-bool readButtonF(int);
+/*
+ ****************************************************************************************
+ *  @brief      Bekommt eine Bitmaske und schaltet die LEDs in GPIOF an, bzw. aus.
+ *
+ *  @param  		offset: int mit dem Offset der entsprechenden LED
+ *
+ *  @return     void
+ ****************************************************************************************/
 
-#endif
+void setLedE(int offset)
+{
+	GPIOE->ODR = 0x01u << offset;
+}
+
+/*
+ ****************************************************************************************
+ *  @brief      Liest die Inputs an GPIOF ein.
+ *
+ *
+ *  @return     int: PF0, PF1
+ ****************************************************************************************/
+
+int readLedF()
+{
+	return GPIOF->IDR & 0x03u;
+}
+
+/*
+ ****************************************************************************************
+ *  @brief      Prüft ob ein Input an GPIOF geschaltet ist.
+ *
+ *  @param  		offset: int mit dem Offsets des Inputs
+ *
+ *  @return     bool: true wenn geschaltet, false wenn nicht.
+ ****************************************************************************************/
+
+bool readButtonF(int offset)
+{
+	int maskSet = (0x01u << offset);
+	int input = GPIOF->IDR;
+	
+	return maskSet != (input & maskSet);
+}
