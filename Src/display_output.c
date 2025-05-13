@@ -28,7 +28,7 @@ void printWinkel(double winkel)
 	char temp[12];
 	sprintf(temp, "%5.1f", winkel);														// 5.1 reserviert 5 chars vor dem komme und 1 Nachkommastelle, da die Berechnung nicht mehr darstellt
 	lcdGotoXY(1,2);
-	lcdPrintReplS(temp);
+	lcdPrintReplS(temp);																			// Funktion ersetzt nur die übergebenen Zeichen.
 }
 
 void printGeschw(double geschw)
