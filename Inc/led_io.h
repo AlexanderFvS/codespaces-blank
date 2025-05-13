@@ -1,8 +1,7 @@
-#include "led_io.h"
-#include <stdio.h>
-#include <stdbool.h>
-#include "stm32f4xx_hal.h"
+#ifndef LED_IO_H
+#define LED_IO_H
 
+#include <stdbool.h>
 
 /*
  ****************************************************************************************
@@ -13,10 +12,7 @@
  *  @return     void
  ****************************************************************************************/
  
-void setLedD(int mask)
-{
-	GPIOD->ODR = mask & 0xFFu;
-}
+void setLedD(int);
 
 /*
  ****************************************************************************************
@@ -26,10 +22,7 @@ void setLedD(int mask)
  *  @return     void
  ****************************************************************************************/
 
-void resetLedD()
-{
-	GPIOD->ODR = 0;
-}
+void resetLedD();
 
 /*
  ****************************************************************************************
@@ -40,10 +33,7 @@ void resetLedD()
  *  @return     void
  ****************************************************************************************/
 
-void setLedE(int offset)
-{
-	GPIOE->ODR = 0x01u << offset;
-}
+void setLedE(int);
 
 /*
  ****************************************************************************************
@@ -53,10 +43,7 @@ void setLedE(int offset)
  *  @return     int: PF0, PF1
  ****************************************************************************************/
 
-int readLedF()
-{
-	return GPIOF->IDR & 0x03u;
-}
+int readLedF();
 
 /*
  ****************************************************************************************
@@ -67,10 +54,6 @@ int readLedF()
  *  @return     bool: true wenn geschaltet, false wenn nicht.
  ****************************************************************************************/
 
-bool readButtonF(int offset)
-{
-	int maskSet = (0x01u << offset);
-	int input = GPIOF->IDR;
-	
-	return maskSet != (input & maskSet);
-}
+bool readButtonF(int);
+
+#endif
