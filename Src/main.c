@@ -39,12 +39,13 @@ int main()
 	{
 		//GPIOE->BSRR = (0x01U);															// Oszilloskop  D16
 		
+																													// --Eingabe--
 		newPhase = readLedF();																// Aktuelle Phase von den GPIOs lesen
 		int time2 = getTimeM();																// Zeitdifferenz berechnen
 		int count2 = getCount();
 		
-		double period = getPeriodM(time1, time2);
 		
+																													// --Error Abfrage--
 		if (setPhase(newPhase, currPhase))										// Encoder-Status abfragen (gibt -1 zurück bei Fehler somit true)
 		{
 			printError();
@@ -53,23 +54,25 @@ int main()
 			resetCount();
 			currPhase = newPhase = readLedF();
 		}
+		double period = getPeriodM(time1, time2);							// --Verarbeitung--
 		
-		
-		
-		
-		if (period > (ZEITFENSTER + 100.0) || (period > ZEITFENSTER && newPhase != currPhase)) {						// Nur berechnen und drucken wenn genug Zeit vergangen ist (ZEITFENSTER)
+		if (period > (ZEITFENSTER + 50.0) || (period > ZEITFENSTER && newPhase != currPhase)) {						// Nur berechnen und drucken wenn genug Zeit vergangen ist (ZEITFENSTER)
 			
 			printCount = 0;
 			
 			winkel1 = calcWinkel();
 			geschw1 = calcGeschw(count1, count2, period);
-			count1 = count2;																			// Werte für nächsten Durchlauf aktualisieren
+																													// Werte für nächsten Durchlauf aktualisieren
 			time1 = time2;	
+			count1 = count2;
 			
 		}
-		if (printCount < 10) {
-			printWinkel(winkel1, printCount);										// Ausgabe
-			printGeschw(geschw1, printCount);
+		if (printCount < 20) {																// --Ausgabe--
+			if (printCount < 10) {
+				printWinkel(winkel1, printCount);	
+			} else {
+				printGeschw(geschw1, printCount - 10);
+			}
 			printCount++;
 		}
 
