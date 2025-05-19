@@ -2,7 +2,7 @@
 #include "led_io.h"
 
 int count = 0;															// Zählvariable für Encoder-Position
-static Phase currPhase;											// Letzte Phase des Encoders 
+
 
 Direction transitions[4][4] =
 { //   A   |    D    |    B    |    C
@@ -12,11 +12,10 @@ Direction transitions[4][4] =
 	{INVALID, FORWARDS, BACKWARDS, NO_CHANGE}  // C
 };
 
-int getPhase()
+int setPhase(int newPhase, int currPhase)
 {
-	int newPhase = readLedF();																// Aktuelle Phase von den GPIOs lesen
+	
 	Direction currDir = transitions[currPhase][newPhase];			// Richtung aus Tabelle bestimmen
-	currPhase = newPhase;																			// curr aktualisieren
 		
 	switch(currDir)
 	{
@@ -53,8 +52,4 @@ int getCount()
 void resetCount()
 {
 	count = 0;
-}
-
-void setPhase() {
-	currPhase = readLedF();
 }
