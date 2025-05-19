@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include "display_output.h"
 #include "lcd.h"
+#include "stm32f4xx_hal.h"
+
+#define ArraySize 16
+
+char altWinkel[ArraySize] = "";
+char altGeschw[ArraySize] = "";
 
 void printLabels()
 {
@@ -9,6 +15,8 @@ void printLabels()
 	
 	lcdGotoXY(1,4);
 	lcdPrintS("Drehgesch. in Grad/Sek.");
+	
+	
 }
 
 void printError()
@@ -23,18 +31,37 @@ void clearError()
 	lcdPrintS(" ");																						// Funktion löscht alles rechts vom Cursor
 }
 
-void printWinkel(double winkel)
+void printWinkel(double neuWinkel, int printCount)
 {
-	char temp[12];
-	sprintf(temp, "%5.1f", winkel);														// 5.1 reserviert 5 chars vor dem komme und 1 Nachkommastelle, da die Berechnung nicht mehr darstellt
-	lcdGotoXY(1,2);
-	lcdPrintReplS(temp);																			// Funktion ersetzt nur die übergebenen Zeichen.
+	
+	char neuTemp[ArraySize];
+	sprintf(neuTemp, "%10.2f", neuWinkel);
+	
+	
+	if (neuTemp[printCount] != altWinkel[printCount])
+	{
+		lcdGotoXY((1 + printCount), 2);
+		char print = neuTemp[printCount];
+		lcdPrintC(print);
+	}
+	altWinkel[printCount] = neuTemp[printCount];
 }
 
-void printGeschw(double geschw)
+	
+
+
+void printGeschw(double neuGeschw, int printCount)
 {
-	char temp[12];
-	sprintf(temp, "%5.1f", geschw);
-	lcdGotoXY(1,5);
-	lcdPrintReplS(temp);
+	
+	char neuTemp[ArraySize];
+	sprintf(neuTemp, "%10.2f", neuGeschw);
+	
+	
+	if (neuTemp[printCount] != altGeschw[printCount])
+	{
+		lcdGotoXY((1 + printCount), 5);
+		char print = neuTemp[printCount];
+		lcdPrintC(print);
+	}
+	altGeschw[printCount] = neuTemp[printCount];
 }
