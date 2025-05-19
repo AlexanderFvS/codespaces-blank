@@ -15,5 +15,5 @@ double calcGeschw(int count1, int count2, double periode)
 {
 	int steps = count2 - count1;
 	
-	return (steps / periode) * WINKEL_PRO_SCHRITT;
+	return (steps / (periode/ 1000)) * WINKEL_PRO_SCHRITT;
 }
