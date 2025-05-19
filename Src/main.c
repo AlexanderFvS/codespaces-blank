@@ -10,7 +10,7 @@
 #include "led_io.h"
 #include "delay.h"
 
-#define ZEITFENSTER 50.0												// Zeitfenster für Geschwindigkeitsberechnung in Sekunden
+#define ZEITFENSTER 250.0												// Zeitfenster für Geschwindigkeitsberechnung in Sekunden
 
 Phase currPhase;															// Letzte Phase des Encoders 
 Phase newPhase;
