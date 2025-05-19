@@ -37,50 +37,47 @@ int main()
 	
 	while (1)
 	{
-		//GPIOE->BSRR = (0x01U);										// Oszilloskop  D16
-		newPhase = readLedF();																// Aktuelle Phase von den GPIOs lesen
-		int time2 = getTimeM();								// Zeitdifferenz berechnen
+		//GPIOE->BSRR = (0x01U);															// Oszilloskop  D16
 		
-		if (setPhase(newPhase, currPhase))															// Encoder-Status abfragen (gibt -1 zurück bei Fehler somit true)
+		newPhase = readLedF();																// Aktuelle Phase von den GPIOs lesen
+		int time2 = getTimeM();																// Zeitdifferenz berechnen
+		int count2 = getCount();
+		
+		double period = getPeriodM(time1, time2);
+		
+		if (setPhase(newPhase, currPhase))										// Encoder-Status abfragen (gibt -1 zurück bei Fehler somit true)
 		{
 			printError();
-			while (!readButtonF(6)) {}								// Warte so lange bis S6 gedrückt wird. Dann Reset Error
+			while (!readButtonF(6)) {}													// Warte so lange bis S6 gedrückt wird. Dann Reset Error
 			clearError();
 			resetCount();
 			currPhase = newPhase = readLedF();
 		}
 		
 		
-		double period = getPeriodM(time1, time2);
 		
-		if (period > 200.0 || (period > ZEITFENSTER && printCount != 0 && newPhase != currPhase)) {						// Nur berechnen und drucken wenn genug Zeit vergangen ist (ZEITFENSTER)
-			int count2 = getCount();
+		
+		if (period > (ZEITFENSTER + 100.0) || (period > ZEITFENSTER && newPhase != currPhase)) {						// Nur berechnen und drucken wenn genug Zeit vergangen ist (ZEITFENSTER)
 			
-			if (printCount == 0) {															// Berechnung
-				//winkel1 , geschw1
-			}
+			printCount = 0;
 			
 			winkel1 = calcWinkel();
 			geschw1 = calcGeschw(count1, count2, period);
+			count1 = count2;																			// Werte für nächsten Durchlauf aktualisieren
+			time1 = time2;	
 			
+		}
+		if (printCount < 10) {
 			printWinkel(winkel1, printCount);										// Ausgabe
 			printGeschw(geschw1, printCount);
 			printCount++;
-			
-			
-			if (printCount >=10) {
-				printCount = 0;
-				//count1 = count2
-				//time1 = time2
-					
-			}		
-			
-				count1 = count2;													// Werte für nächsten Durchlauf aktualisieren
-				time1 = time2;
-			
 		}
-		//GPIOE->BSRR = (0x01U << 16);						// Oszilloskop
-		currPhase = newPhase;
+
 		
-	}
+					
+		
+		currPhase = newPhase;		
+		//GPIOE->BSRR = (0x01U << 16);						// Oszilloskop
+		
+		}
 }
