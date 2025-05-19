@@ -13,14 +13,14 @@ void initTimeM()
     TIM2->CR1 = TIM_CR1_CEN;            /* Enable Timer                  */
 }
 
-uint32_t getTimeM()
+int getTimeM()
 {
 	return TIM2->CNT;
 }
 
-double getPeriodM(uint32_t t1, uint32_t t2)
+double getPeriodM(int t1, int t2)
 {
-	uint32_t diff = (t2 >= t1) ? (t2 - t1) : (0xFFFFFFFF - t1 + t2 + 1); // Bitmanipulation mit ~?
+	double diff = t2 - t1; //(t2 >= t1) ? (t2 - t1) : (0xFFFFFFFF - t1 + t2 + 1); 			// Bitmanipulation mit ~?
 	
-	return diff / 90e6; // * 90.000.000 für Sekunden;
+	return diff / 90000.0; 																											// * 90.000.000 für Sekunden;
 }
