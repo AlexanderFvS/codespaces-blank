@@ -35,7 +35,7 @@ void printWinkel(double neuWinkel, int printCount)
 {
 	
 	char neuTemp[ArraySize];
-	sprintf(neuTemp, "%10.2f", neuWinkel);
+	sprintf(neuTemp, "%10.1f", neuWinkel);
 	
 	
 	if (neuTemp[printCount] != altWinkel[printCount])
@@ -54,7 +54,7 @@ void printGeschw(double neuGeschw, int printCount)
 {
 	
 	char neuTemp[ArraySize];
-	sprintf(neuTemp, "%10.2f", neuGeschw);
+	sprintf(neuTemp, "%10.3f", neuGeschw);
 	
 	
 	if (neuTemp[printCount] != altGeschw[printCount])
