@@ -13,7 +13,7 @@ double calcWinkel()
 
 double calcGeschw(int count1, int count2, double periode)
 {
-	int steps = count2 - count1;
+	double winkel = ((double) count2 - count1) * WINKEL_PRO_SCHRITT;
 	
-	return (steps / (periode/ 1000)) * WINKEL_PRO_SCHRITT;
+	return (winkel / (periode/ 1000.0));
 }
